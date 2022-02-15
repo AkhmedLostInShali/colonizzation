@@ -91,10 +91,11 @@ def prom_choice(planet_name):
                   </head>
                   <body>
                     <h4>Моё предложение: {planet_name}</h4>
+                    <h2>Прекрасный выбор!</h2>
                     <div class="alert alert-primary" role="alert">
                       {planet_name} находится где-то в космосе
                     </div>
-                    <div class="alert alert-success" role="alert">
+                    <div class="alert alert-success" role="alert" width=400px>
                       Мы предлагаем насладиться пейзажами {planet_name}
                     </div>
                     <div class="alert alert-danger" role="alert">
