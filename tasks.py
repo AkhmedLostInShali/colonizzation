@@ -76,5 +76,33 @@ def prom_image():
                 </html>"""
 
 
+@app.route('/choice/<planet_name>')
+def prom_choice(planet_name):
+    return f"""<!doctype html>
+                <html lang="en">
+                  <head>
+                    <meta charset="utf-8">
+                    <link rel="stylesheet" type="text/css" href="{url_for('static', filename='css/style.css')}" />
+                    <link rel="stylesheet" 
+                    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" 
+                    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" 
+                    crossorigin="anonymous">
+                    <title>Привет, Марс!</title>
+                  </head>
+                  <body>
+                    <h4>Моё предложение: {planet_name}</h4>
+                    <div class="alert alert-primary" role="alert">
+                      {planet_name} находится где-то в космосе
+                    </div>
+                    <div class="alert alert-success" role="alert">
+                      Мы предлагаем насладиться пейзажами {planet_name}
+                    </div>
+                    <div class="alert alert-danger" role="alert">
+                      Билет до {planet_name} будет стоить {len(planet_name) ** 6} миллионов
+                    </div>
+                  </body>
+                </html>"""
+
+
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')
