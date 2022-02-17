@@ -231,6 +231,11 @@ def results(nickname, level, rating):
                 </html>"""
 
 
+@app.route('/training/<prof>')
+def scheme(prof):
+    return render_template('scheme.html', profession=prof)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
