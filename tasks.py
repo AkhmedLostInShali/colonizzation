@@ -236,6 +236,12 @@ def scheme(prof):
     return render_template('scheme.html', profession=prof)
 
 
+@app.route('/list_prof/<marker>')
+def list_maker(marker):
+    prof = ['врач', "доктор", "медик", "лекарь", "цирюльник"]
+    return render_template('lister.html', professions=prof, mark=marker)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()

@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<body>
+  {% if mark in ['ul', 'ol'] %}
+        <h2>Список профессий</h2>
+        <{{mark}}>
+            {% for prof in professions %}
+              <li>{{prof}}</li>
+            {% endfor %}
+        </{{mark}}>
+  {% else %}
+        <div class="alert alert-danger" role="alert">
+          Переданы неверные данные
+        </div>
+  {% endif %}
+{% endblock %}
