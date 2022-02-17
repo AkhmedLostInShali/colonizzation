@@ -1,16 +1,14 @@
-from flask import Flask, url_for
+from flask import Flask, url_for, redirect, render_template
+from loginform import LoginForm
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 
-@app.route('/')
-def index():
-    return "Миссия Колонизация Марса"
-
-
-@app.route('/index')
-def countdown():
-    return "И на Марсе будут яблони цвести!"
+@app.route('/index/<title>')
+@app.route('///<title>')
+def index(title):
+    return render_template('base.html', title=title)
 
 
 @app.route('/promotion')
@@ -105,6 +103,7 @@ def prom_choice(planet_name):
                 </html>"""
 
 
+@app.route('/success')
 @app.route('/astronaut_selection')
 def anketa():
     return f"""<!doctype html>
@@ -230,6 +229,14 @@ def results(nickname, level, rating):
                     </div>
                   </body>
                 </html>"""
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        return redirect('/success')
+    return render_template('login.html', title='Авторизация', form=form)
 
 
 if __name__ == '__main__':
