@@ -1,28 +1,49 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Авторизация</h1>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='css/login_style.css') }} />
+</head>
+<h2>Аварийный доступ</h2>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
     <p>
-        {{ form.username.label }}<br>
-        {{ form.username(class="form-control") }}<br>
-        {% for error in form.username.errors %}
+        {{ form.id_astro.label }}<br>
+        {{ form.id_astro(class="form-control") }}<br>
+        {% for error in form.id_astro.errors %}
     <div class="alert alert-danger" role="alert">
         {{ error }}
     </div>
     {% endfor %}
     </p>
     <p>
-        {{ form.password.label }}<br>
-        {{ form.password(class="form-control", type="password") }}<br>
-        {% for error in form.password.errors %}
+        {{ form.pass_astro.label }}<br>
+        {{ form.pass_astro(class="form-control", type="password") }}<br>
+        {% for error in form.pass_astro.errors %}
     <div class="alert alert-danger" role="alert">
         {{ error }}
     </div>
     {% endfor %}
     </p>
-    <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+    <p>
+        {{ form.id_cap.label }}<br>
+        {{ form.id_cap(class="form-control") }}<br>
+        {% for error in form.id_cap.errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endfor %}
+    </p>
+    <p>
+        {{ form.pass_cap.label }}<br>
+        {{ form.pass_cap(class="form-control", type="password") }}<br>
+        {% for error in form.pass_cap.errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endfor %}
+    </p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
 </form>
 {% endblock %}
