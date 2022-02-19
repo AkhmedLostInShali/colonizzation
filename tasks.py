@@ -1,4 +1,4 @@
-from flask import Flask, url_for, redirect, render_template
+from flask import Flask, url_for, redirect, render_template, request, session
 from loginform import LoginForm
 
 app = Flask(__name__)
@@ -38,6 +38,7 @@ def mars():
                 </html>"""
 
 
+@app.route('/success')
 @app.route('/promotion_image')
 def prom_image():
     return f"""<!doctype html>
@@ -103,10 +104,10 @@ def prom_choice(planet_name):
                 </html>"""
 
 
-@app.route('/success')
-@app.route('/astronaut_selection')
-def anketa():
-    return f"""<!doctype html>
+@app.route('/astronaut_selection', methods=['POST', 'GET'])
+def form_sample():
+    if request.method == 'GET':
+        return f"""<!doctype html>
                 <html lang="en">
                   <head>
                     <meta charset="utf-8">
@@ -118,88 +119,94 @@ def anketa():
                     <title>Привет, Марс!</title>
                   </head>
                   <body align=center>
-                    <div class="card text-white bg-danger mb-3" style="max-width: 44rem; margin-left: auto;
-                     margin-right: auto;" align=left>
-                      <div class="mb-3">
-                        <input class="form-control" id="exampleFormControlInput1" rows="1"
-                        placeholder="Введите фамилию"></input>
-                        <input class="form-control" id="exampleFormControlInput1" type=text rows="1"
-                        placeholder="Введите имя"></input>
-                        <label for="exampleFormControlInput1" class="form-label"></label>
-                        <input type="email" class="form-control" id="exampleFormControlInput1"
-                        placeholder="Введите адрес почты"></input>
-                        <label for="exampleFormControlInput1" class="form-label">Какое у вас образование?</label>
-                        <select class="form-select" aria-label="Default select example">
-                          <option selected>Начальное</option>
-                          <option value="2">Среднее</option>
-                          <option value="3">Высшее</option>
-                        </select>
-                      </div>   
-                      <label for="exampleFormControlInput1" class="form-label">Какие у вас есть профессии?</label>
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked">
-                          Пилот
-                        </label>
-                      </div>   
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked">
-                          Инженер
-                        </label>
-                      </div>   
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked">
-                          Врач
-                        </label>
-                      </div>   
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked">
-                          Таргетолог
-                        </label>
-                      </div>   
-                      <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked">
-                        <label class="form-check-label" for="flexCheckChecked">
-                          Суетолог
-                        </label>
-                      </div>
-                        </br>
-                        <label for="form-check">Укажите пол</label>
+                    <form method="post" enctype="multipart/form-data">
+                      <div class="card text-white bg-danger mb-3" style="max-width: 44rem; margin-left: auto;
+                       margin-right: auto;" align=left>
+                        <div class="mb-3">
+                          <input class="form-control" name="surname" rows="1"
+                          placeholder="Введите фамилию"></input>
+                          <input class="form-control" name="name" type=text rows="1"
+                          placeholder="Введите имя"></input>
+                          <label class="form-label"></label>
+                          <input type="email" class="form-control" name="email"
+                          placeholder="Введите адрес почты"></input>
+                          <label class="form-label">Какое у вас образование?</label>
+                          <select class="form-select" name="grade" aria-label="Default select example">
+                            <option selected value="Начальное">Начальное</option>
+                            <option value="Среднее">Среднее</option>
+                            <option value="Высшее">Высшее</option>
+                          </select>
+                        </div>   
+                        <label class="form-label">Какие у вас есть профессии?</label>
                         <div class="form-check">
-                          <input class="form-check-input" type="radio" name="sex" id="male" value="male" checked>
-                          <label class="form-check-label" for="male">
-                          Мужской
+                          <input class="form-check-input" type="checkbox" value="Пилот" id="flexCheckChecked" name="job">
+                          <label class="form-check-label" for="flexCheckChecked">
+                            Пилот
+                          </label>
+                        </div>   
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="Инженер" id="flexCheckChecked" name="job">
+                          <label class="form-check-label" for="flexCheckChecked">
+                            Инженер
+                          </label>
+                        </div>   
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="Врач" id="flexCheckChecked" name="job">
+                          <label class="form-check-label" for="flexCheckChecked">
+                            Врач
+                          </label>
+                        </div>   
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="Таргетолог" id="flexCheckChecked" name="job">
+                          <label class="form-check-label" for="flexCheckChecked">
+                            Таргетолог
+                          </label>
+                        </div>   
+                        <div class="form-check">
+                          <input class="form-check-input" type="checkbox" value="Суетолог" id="flexCheckChecked" name="job">
+                          <label class="form-check-label" for="flexCheckChecked">
+                            Суетолог
                           </label>
                         </div>
-                        <div class="form-check">
-                          <input class="form-check-input" type="radio" name="sex" id="female" value="female">
-                          <label class="form-check-label" for="female">
-                            Женский
-                          </label>
+                          </br>
+                          <label for="form-check">Укажите пол</label>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sex" id="male" value="male" checked>
+                            <label class="form-check-label" for="male">
+                              Мужской
+                            </label>
+                          </div>
+                          <div class="form-check">
+                            <input class="form-check-input" type="radio" name="sex" id="female" value="female">
+                            <label class="form-check-label" for="female">
+                              Женский
+                            </label>
+                          </div>
+                          </br>
+                          <label for="input-group">Почему вы хотите принять участие в миссии?</label>
+                          <div class="input-group">
+                            <textarea class="form-control" aria-label="With textarea" rows="4" name="reason"></textarea>
+                          </div>
+                          </br>
+                          <label for="input-group">Приложите фотографию</label>
+                          <div class="input-group mb-3">
+                            <input type="file" class="form-control" id="inputGroupFile02">
+                            <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                          </div>
+                        <div class="form-group form-check">
+                          <input type="checkbox" class="form-check-input" id="acceptRules" name="ready">
+                          <label class="form-check-label" for="acceptRules">Готовы остаться на марсе?</label>
                         </div>
-                        </br>
-                        <label for="input-group">Почему вы хотите принять участие в миссии?</label>
-                        <div class="input-group">
-                          <textarea class="form-control" aria-label="With textarea" rows="4"></textarea>
+                        <button type="submit" class="btn btn-primary" style="max-width: 8rem;">Отправить</button>
                         </div>
-                        </br>
-                        <label for="input-group">Приложите фотографию</label>
-                        <div class="input-group mb-3">
-                          <input type="file" class="form-control" id="inputGroupFile02">
-                          <label class="input-group-text" for="inputGroupFile02">Upload</label>
-                        </div>
-                      <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="acceptRules" name="accept">
-                        <label class="form-check-label" for="acceptRules">Готовы остаться на марсе?</label>
                       </div>
-                      <button type="submit" class="btn btn-primary" style="max-width: 8rem;">Отправить</button>
-                      </div>
-                    </div>
+                    </form>
                   </body>
                 </html>"""
+    elif request.method == 'POST':
+        session["form"] = request.form.copy()
+        print(session['form'])
+        return redirect("/auto_answer")
 
 
 @app.route("/results/<nickname>/<int:level>/<float:rating>")
@@ -229,6 +236,17 @@ def results(nickname, level, rating):
                     </div>
                   </body>
                 </html>"""
+
+
+@app.route('/auto_answer')
+@app.route('/answer')
+def answer():
+    form = session.get('form')
+    data = {'title': 'анкета', 'surname': form.get('surname'), 'name': form.get('name'),
+            'education': form.get('grade'), 'profession': form.get('job'),
+            'sex': form.get('sex'), 'motivation': form.get('reason'),
+            'ready': form.get('ready')}
+    return render_template('auto_answer.html', data=data)
 
 
 @app.route('/training/<prof>')

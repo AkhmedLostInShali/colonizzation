@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href={{ url_for('static', filename='css/answer_style.css') }} />
+    <title>{{data[0]}}</title>
+</head>
+<body>
+  {% for key, row in data.items() %}
+    {% if loop.last %}
+      <h4>{{ key }}: {{ 'True' if row == 'on' else 'False' }}</h4>
+    {% elif loop.first %}
+
+    {% else %}
+      <h4>{{ key }}: {{ row if row else 'was not filled' }}</h4>
+    {% endif %}
+  {% endfor %}
+{% endblock %}
