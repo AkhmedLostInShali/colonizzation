@@ -260,6 +260,12 @@ def list_maker(marker):
     return render_template('lister.html', professions=prof, mark=marker)
 
 
+@app.route('/distribution')
+def cabins():
+    people = ['Ридли Скотт', "Энди Уир", "Марк Уотни", "Венката Капур", "Тедди Сандерс", "Шон Бин"]
+    return render_template('caiuta.html', stuff=people)
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<body>
+  {% set room = "Каюта №" %}
+  <h2 style="margin-left: 15rem;">Размещение по каютам</h2>
+  {% for people in stuff %}
+    <h5 style="margin-left: 15rem;">{{people}} - {{room}} {{loop.index}} {% if loop.first %}- капитан корабля {% endif %}</h5>
+  {% endfor %}
+{% endblock %}
