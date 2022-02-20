@@ -118,10 +118,8 @@ def form_sample():
                     crossorigin="anonymous">
                     <title>Привет, Марс!</title>
                   </head>
-                  <body align=center>
-                    <form method="post" enctype="multipart/form-data">
-                      <div class="card text-white bg-danger mb-3" style="max-width: 44rem; margin-left: auto;
-                       margin-right: auto;" align=left>
+                  <body>
+                    <form method="post" class="login_form">
                         <div class="mb-3">
                           <input class="form-control" name="surname" rows="1"
                           placeholder="Введите фамилию"></input>
@@ -199,7 +197,6 @@ def form_sample():
                         </div>
                         <button type="submit" class="btn btn-primary" style="max-width: 8rem;">Отправить</button>
                         </div>
-                      </div>
                     </form>
                   </body>
                 </html>"""
