@@ -251,6 +251,11 @@ def scheme(prof):
     return render_template('scheme.html', profession=prof)
 
 
+@app.route('/table/<sex>/<int:age>')
+def table(sex, age):
+    return render_template('cabin_table.html', sex=sex, age=age)
+
+
 @app.route('/list_prof/<marker>')
 def list_maker(marker):
     prof = ['врач', "доктор", "медик", "лекарь", "цирюльник"]
