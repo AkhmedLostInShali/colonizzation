@@ -1,5 +1,5 @@
 from flask import Flask, url_for, redirect, render_template, request, session
-from loginform import LoginForm
+from forms.loginform import LoginForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
