@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<body>
+  <h2 align="center">Works log</h2>
+  {% for work in works %}
+      <h4 style="padding-left: 20px; margin-top: 25px">Action №{{ loop.index }}</h4>
+      <table style="margin-left: 20px">
+          <tr bgcolor="#DDD">
+            <td>Title of activity</td>
+            <td>Team leader</td>
+            <td>Duration</td>
+            <td>List of collaborators</td>
+            <td>Is finished</td>
+          </tr>
+          <tr bgcolor="#DDF">
+            <td width="450px">{{ work.job }}</td>
+            {% set user = team|selectattr('id', "equalto", work.team_leader)|first() %}
+            <td width="150px">{{ user.name + ' ' + user.surname }}</td>
+            <td width="150px">{{ work.work_size }} {% if work.work_size > 1 %} hours {% else %} hour {% endif %}</td>
+            <td width="150px">{{ work.collaborators }}</td>
+            {% if work.is_finished %}
+              <td width="150px" bgcolor="#DFD">Is finished</td>
+            {% else %}
+              <td width="150px" bgcolor="#FDD">Is not finished</td>
+            {% endif %}
+          </tr>
+      </table>
+  {% endfor %}
+</body>
+{% endblock %}
