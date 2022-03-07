@@ -272,7 +272,8 @@ def file_upload():
                         </html>'''
     elif request.method == 'POST':
         f = request.files['file']
-        f.save('static/img/to_show.jpg')
+        if f:
+            f.save('static/img/to_show.jpg')
         return f'''<!doctype html>
                         <html lang="en">
                           <head>
