@@ -1,6 +1,7 @@
 from flask import Flask
 from data import db_session
 from data.jobs import Jobs
+from data.departments import Department
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -8,14 +9,14 @@ app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 def main():
     db_session.global_init("db/mars_explorer.db")
-    job = Jobs()
-    job.team_leader = 3
-    job.job = 'Set an auto-pilot'
-    job.work_size = 48
-    job.collaborators = '4, 2, 1'
-    job.is_finished = False
+    dep = Department()
+    dep.chief = 3
+    dep.title = 'geological exploration'
+    dep.work_size = 48
+    dep.members = '4, 2, 1'
+    dep.email = 'geological@email.cu'
     db_sess = db_session.create_session()
-    db_sess.add(job)
+    db_sess.add(dep)
     db_sess.commit()
     # app.run()
 
