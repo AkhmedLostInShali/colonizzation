@@ -1,4 +1,6 @@
-from flask import Flask, url_for, redirect, render_template
+import os
+
+from flask import Flask, url_for, redirect, render_template, request
 from loginform import LoginForm
 
 app = Flask(__name__)
@@ -239,5 +241,67 @@ def login():
     return render_template('login.html', title='Авторизация', form=form)
 
 
+@app.route('/load_photo', methods=['POST', 'GET'])
+def file_upload():
+    if request.method == 'GET':
+        if os.path.exists('static/img/to_show.jpg'):
+            os.remove('static/img/to_show.jpg')
+        return f'''<!doctype html>
+                        <html lang="en">
+                          <head>
+                            <meta charset="utf-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                            <link rel="stylesheet"
+                            href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+                            integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+                            crossorigin="anonymous">
+                            <link rel="stylesheet" type="text/css" href="{url_for('static', filename='css/style.css')}" />
+                            <title>Отбор астронавтов</title>
+                          </head>
+                          <body>
+                            <h1 align="center">Загрузка фотографии</h1>
+                            <h3 align="center">для участия в миссии</h3>
+                            <form class="login_form" method="post" enctype="multipart/form-data">
+                              <label for="photo">Приложите фотографию</label>
+                              <label></label>
+                              <input class="form-control" type="file" class="form-control-file" id="photo" name="file">
+                              <label></label>
+                              <button class="btn btn-primary" type="submit" class="btn btn-primary">Отобразить</button>
+                            </form>
+                          </body>
+                        </html>'''
+    elif request.method == 'POST':
+        f = request.files['file']
+        f.save('static/img/to_show.jpg')
+        return f'''<!doctype html>
+                        <html lang="en">
+                          <head>
+                            <meta charset="utf-8">
+                            <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+                             <link rel="stylesheet"
+                             href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+                             integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+                             crossorigin="anonymous">
+                            <link rel="stylesheet" type="text/css" href="{url_for('static', filename='css/style.css')}" />
+                            <title>Отбор астронавтов</title>
+                          </head>
+                          <body>
+                            <h1 align="center">Загрузка фотографии</h1>
+                            <h3 align="center">для участия в миссии</h3>
+                            <form class="login_form" method="post" enctype="multipart/form-data">
+                              <label for="photo">Приложите фотографию</label>
+                              <label></label>
+                              <input class="form-control" type="file" class="form-control-file" id="photo" name="file">
+                              <label></label>
+                              <img class="form-control" src="{url_for('static', filename="img/to_show.jpg")}" alt="">
+                              <label></label>
+                              <button class="btn btn-primary" type="submit" class="btn btn-primary">Отобразить</button>
+                            </form>
+                          </body>
+                        </html>'''
+
+
 if __name__ == '__main__':
     app.run(port=8080, host='127.0.0.1')
+    if os.path.exists('static/img/to_show.jpg'):
+        os.remove('static/img/to_show.jpg')
