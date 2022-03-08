@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, url_for, redirect, render_template, request
+from flask import Flask, url_for, redirect, render_template, request, session
 from loginform import LoginForm
 
 app = Flask(__name__)
@@ -229,6 +229,52 @@ def results(nickname, level, rating):
                     <div class="alert alert-warning" role="alert">
                       Желаем удачи!
                     </div>
+                  </body>
+                </html>"""
+
+
+@app.route("/carousel/<int:slide>")
+@app.route("/carousel/")
+def carousel(slide=0):
+    return f"""<!doctype html>
+                <html lang="en">
+                  <head>
+                    <meta charset="utf-8">
+                    <link rel="stylesheet" 
+                    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" 
+                    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" 
+                    crossorigin="anonymous">
+                    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
+                    <script type="text/javascript" src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+                    <title>галерея!</title>
+                  </head>
+                  <body>
+                      <header>
+                        <div id="carouselExampleIndicators" class="carousel slide" data-mdb-ride="carousel" style="width: 800px; height: 400">
+                          <div class="carousel-inner">
+                            <div class="carousel-item {'active' if slide == 0 else ''}" id="0">
+                              <img src="{url_for('static', filename='img/landscapes/1.jpg')}" style="width: 800px; height: 400" alt="...">
+                            </div>
+                            <div class="carousel-item {'active' if slide == 1 else ''}" id="1">
+                              <img src="{url_for('static', filename='img/landscapes/2.jpg')}" style="width: 800px; height: 400" alt="...">
+                            </div>
+                            <div class="carousel-item {'active' if slide == 2 else ''}" id="2">
+                              <img src="{url_for('static', filename='img/landscapes/3.jpg')}" style="width: 800px; height: 400" alt="...">
+                            </div>
+                            <div class="carousel-item {'active' if slide == 3 else ''}" id="3">
+                              <img src="{url_for('static', filename='img/landscapes/4.jpg')}" style="width: 800px; height: 400" alt="...">
+                            </div>
+                          </div>
+                          <a class="carousel-control-prev" href="{(slide - 1) % 4}" role="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon bg-primary" aria-hidden="true"></span>
+                            <span class="sr-only">Previous</span>
+                          </a>
+                          <a class="carousel-control-next" href="{(slide + 1) % 4}" role="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                            <span class="carousel-control-next-icon bg-primary" aria-hidden="true"></span>
+                            <span class="sr-only">Next</span>
+                          </a>
+                        </div>
+                      </header>
                   </body>
                 </html>"""
 
