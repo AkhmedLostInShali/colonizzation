@@ -1,25 +1,101 @@
-from data.db_session import global_init, create_session
-from data.jobs import Jobs
-from data.departments import Department
+from data import db_session
 from data.users import User
+from data.jobs import Jobs
+from flask import Flask, render_template, redirect
+from forms.jobform import JobForm
+from forms.registerform import RegisterForm
+from forms.loginform import LoginForm
+from flask_login import LoginManager, login_user, logout_user, login_required
 
-global_init('db/mars_explorer.db')
-db_sess = create_session()
-department = db_sess.query(Department).filter(Department.id == 1).first()
-department_workers = [int(x) for x in department.members.split(', ')]
-all_jobs = db_sess.query(Jobs).all()
-hours = dict()
-for worker in department_workers:
-    time = 0
-    for job in all_jobs:
-        if worker in set([job.team_leader] + [int(x) for x in job.collaborators.split(', ')]):
-            time += job.work_size
-    teamleader = db_sess.query(User).filter(User.id == worker).first()
-    name = teamleader.surname + ' ' + teamleader.name
-    if name in hours:
-        hours[name] += time
-    else:
-        hours[name] = time
-for name, time in hours.items():
-    if time > 25:
-        print(name)
+app = Flask(__name__)
+app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+def main():
+    db_session.global_init("db/mars_explorer.db")
+    app.run(port=8080, host='127.0.0.1')
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    db_sess = db_session.create_session()
+    return db_sess.query(User).get(user_id)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        db_sess = db_session.create_session()
+        user = db_sess.query(User).filter(User.email == form.email.data).first()
+        if user and user.check_password(form.password.data):
+            login_user(user, remember=form.remember_me.data)
+            return redirect("/")
+        return render_template('login.html',
+                               message="Неправильный логин или пароль",
+                               form=form)
+    return render_template('login.html', title='Авторизация', form=form)
+
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect("/")
+
+
+@app.route('/')
+def first_table():
+    session = db_session.create_session()
+    stuff = session.query(User).all()
+    work_list = session.query(Jobs).all()
+    return render_template('user_job_table.html', team=stuff, works=work_list)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def reqister():
+    form = RegisterForm()
+    if form.validate_on_submit():
+        if form.password.data != form.password_again.data:
+            return render_template('register.html', title='Регистрация',
+                                   form=form,
+                                   message="Пароли не совпадают")
+        db_sess = db_session.create_session()
+        if db_sess.query(User).filter(User.email == form.email.data).first():
+            return render_template('register.html', title='Регистрация',
+                                   form=form,
+                                   message="Такой пользователь уже есть")
+        user = User(name=form.name.data,
+                    email=form.email.data,
+                    surname=form.surname.data,
+                    age=form.age.data,
+                    position=form.position.data,
+                    speciality=form.speciality.data,
+                    address=form.address.data)
+        user.set_password(form.password.data)
+        db_sess.add(user)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('register.html', title='Регистрация', form=form)
+
+
+@app.route('/job', methods=['GET', 'POST'])
+def add_job():
+    form = JobForm()
+    if form.validate_on_submit():
+        job = Jobs(job=form.job.data,
+                   team_leader=form.team_leader.data,
+                   work_size=form.work_size.data,
+                   collaborators=form.collaborators.data,
+                   is_finished=form.is_finished.data)
+        db_sess = db_session.create_session()
+        db_sess.add(job)
+        db_sess.commit()
+        return redirect('/')
+    return render_template('add_job.html', title='Добавление работы', form=form)
+
+
+if __name__ == '__main__':
+    main()
