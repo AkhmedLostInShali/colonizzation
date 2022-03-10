@@ -3,7 +3,11 @@
 {% block content %}
 <body>
   <h2 align="center">Works log</h2>
+  <a href="/job" class="btn btn-secondary" style="margin-left: 20px">
+    Add job
+  </a>
   {% for work in works %}
+    <div class="col-md6 border rounded">
       <h4 style="padding-left: 20px; margin-top: 25px">Action №{{ loop.index }}</h4>
       <table style="margin-left: 20px">
           <tr bgcolor="#DDD">
@@ -26,6 +30,17 @@
             {% endif %}
           </tr>
       </table>
+      {% if current_user.is_authenticated and current_user.id in [work.team_leader, 1] %}
+        <div>
+          <a href="/edit_job/{{ work.id }}" class="btn btn-warning" style="margin-left: 20px">
+            Edit job
+          </a>
+          <a href="/delete_job/{{ work.id }}" class="btn btn-danger">
+            Delete job
+          </a>
+        </div>
+      {% endif %}
+    </div>
   {% endfor %}
 </body>
 {% endblock %}

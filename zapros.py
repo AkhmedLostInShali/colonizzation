@@ -85,7 +85,7 @@ def reqister():
 def add_job():
     form = JobForm()
     if form.validate_on_submit():
-        job = Jobs(job=form.job.data,
+        job = Jobs(job=form.job_title.data,
                    team_leader=form.team_leader.data,
                    work_size=form.work_size.data,
                    collaborators=form.collaborators.data,

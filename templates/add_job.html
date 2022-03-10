@@ -5,9 +5,9 @@
 <form action="" method="post" novalidate  style="padding-left: 15rem">
     {{ form.hidden_tag() }}
     <p>
-        {{ form.job.label }}<br>
-        {{ form.job(class="form-control") }}<br>
-        {% for error in form.job.errors %}
+        {{ form.job_title.label }}<br>
+        {{ form.job_title(class="form-control") }}<br>
+        {% for error in form.job_title.errors %}
     <div class="alert alert-danger" role="alert">
         {{ error }}
     </div>
@@ -15,7 +15,7 @@
     </p>
     <p>
         {{ form.team_leader.label }}<br>
-        {{ form.team_leader(class="form-control") }}<br>
+        {{ form.team_leader(class="form-control", readonly=True, value=leader) }}<br>
         {% for error in form.team_leader.errors %}
     <div class="alert alert-danger" role="alert">
         {{ error }}
@@ -42,5 +42,6 @@
     </p>
     <p align="left">{{ form.is_finished() }} {{ form.is_finished.label }}</p>
     <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{ message }}
 </form>
 {% endblock %}
