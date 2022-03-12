@@ -83,6 +83,7 @@ def reqister():
 
 
 @app.route('/job', methods=['GET', 'POST'])
+@login_required
 def add_job():
     form = JobForm()
     if form.validate_on_submit():
