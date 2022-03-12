@@ -3,8 +3,11 @@
 {% block content %}
 <body>
   <h2 align="center">Works log</h2>
-  <a href="/job" class="btn btn-secondary" style="margin-left: 20px">
+  <a href="/job" class="btn btn-primary" style="margin-left: 20px">
     Add job
+  </a>
+  <a href="/departments" class="btn btn-info">
+    Switch to departments
   </a>
   {% for work in works %}
     <div class="col-md6 border rounded">

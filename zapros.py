@@ -51,7 +51,7 @@ def first_table():
     session = db_session.create_session()
     stuff = session.query(User).all()
     work_list = session.query(Jobs).all()
-    return render_template('user_job_table.html', team=stuff, works=work_list)
+    return render_template('job_table.html', team=stuff, works=work_list)
 
 
 @app.route('/register', methods=['GET', 'POST'])
