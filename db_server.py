@@ -1,4 +1,4 @@
-from data import db_session
+from data import db_session, jobs_api, users_api
 from data.users import User
 from data.jobs import Jobs
 from data.departments import Department
@@ -8,6 +8,7 @@ from forms.registerform import RegisterForm
 from forms.loginform import LoginForm
 from forms.departmentform import DepartmentForm
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
+from requests import get
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -17,6 +18,8 @@ login_manager.init_app(app)
 
 def main():
     db_session.global_init("db/mars_explorer.db")
+    app.register_blueprint(jobs_api.blueprint)
+    app.register_blueprint(users_api.blueprint)
     app.run(port=8080, host='127.0.0.1')
 
 
@@ -216,6 +219,20 @@ def dep_delete(id):
     else:
         abort(404)
     return redirect('/departments')
+
+
+@app.route('/users_show/<int:users_id>', methods=['GET'])
+def show_city(users_id):
+    user = get(f'http://localhost:8080/api/users/{users_id}').json()['user']
+    print(user)
+    if not user.get('city_from'):
+        abort(404)
+    json_response = get("http://geocode-maps.yandex.ru/1.x/?apikey="
+                        + f"40d1649f-0493-4b70-98ba-98533de7710b&geocode={user.get('city_from')}&format=json").json()
+    toponym = json_response["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]
+    coordinates = ','.join(toponym["Point"]["pos"].split(' '))
+    img_src = f"http://static-maps.yandex.ru/1.x/?ll={coordinates}&l=sat&z=12"
+    return render_template('show_city.html', name=user.get('name'), surname=user.get('surname'), img_src=img_src)
 
 
 if __name__ == '__main__':
