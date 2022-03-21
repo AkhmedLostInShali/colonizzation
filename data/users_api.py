@@ -87,6 +87,8 @@ def redact_user(users_id):
     db_sess = db_session.create_session()
     if request.json.get('id') and request.json.get('id') in [user.id for user in db_sess.query(User).all()]:
         return jsonify({'error': 'Id already exists'})
+    if request.json.get('email') and request.json.get('email') in [user.email for user in db_sess.query(User).all()]:
+        return jsonify({'error': 'email already exists'})
     user = db_sess.query(User).get(users_id)
     if not user:
         return jsonify({'error': 'Not found'})

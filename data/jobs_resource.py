@@ -1,9 +1,9 @@
 from flask import jsonify, request
 from flask_restful import abort, Resource
-from . import db_session, jobs_parser
+from . import db_session, my_parsers
 from .jobs import Jobs
 
-parser = jobs_parser.JobsParser()
+parser = my_parsers.JobsParser()
 
 
 def abort_if_jobs_not_found(jobs_id):
