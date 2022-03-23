@@ -20,7 +20,7 @@ class JobsResource(Resource):
         job = db_sess.query(Jobs).get(jobs_id)
         return jsonify(
             {
-                'news': job.to_dict(only=(
+                'jobs': job.to_dict(only=(
                     'id', 'job', 'user.name', 'is_finished', 'collaborators'))
             }
         )
@@ -57,7 +57,7 @@ class JobsListResource(Resource):
         session = db_session.create_session()
         news = session.query(Jobs).all()
         return jsonify({
-            'news':
+            'jobs':
                 [item.to_dict(only=('id', 'job', 'work_size', 'collaborators', 'team_leader', 'is_finished',
                                     'start_date')) for item in news]})
 

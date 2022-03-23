@@ -51,8 +51,12 @@ class UsersResource(Resource):
         user.speciality = request.json['speciality'] if request.json.get('speciality') else user.speciality
         user.city_from = request.json['city_from'] if request.json.get('city_from') else user.city_from
         user.address = request.json['address'] if request.json.get('address') else user.address
-        if request.json.get('password'):
+        if request.json.get('password') and request.json.get('password_again'):
+            if request.json['password'] != request.json['password_again']:
+                return jsonify({'error': "Passwords doesn't match"})
             user.set_password(request.json.get('password'))
+        elif request.json.get('password') or request.json.get('password_again'):
+            return jsonify({'error': "Requires both of 'password' and 'password again' or none of them"})
         db_sess.commit()
         return jsonify({'success': 'OK'})
 
