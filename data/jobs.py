@@ -22,3 +22,6 @@ class Jobs(SqlAlchemyBase, SerializerMixin):
     team_leader = sqlalchemy.Column(sqlalchemy.Integer,
                                     sqlalchemy.ForeignKey("users.id"))
     user = orm.relation('User')
+    hazards = orm.relation("Hazard",
+                           secondary="jobs_to_hazard",
+                           backref="jobs")

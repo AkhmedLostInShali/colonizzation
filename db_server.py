@@ -1,6 +1,7 @@
 from data import db_session, jobs_api, users_api
 from data.users import User
 from data.jobs import Jobs
+from data.hazard import Hazard
 from data.departments import Department
 from flask import Flask, render_template, redirect, request, abort
 from forms.jobform import JobForm
@@ -56,6 +57,7 @@ def logout():
 def job_table():
     session = db_session.create_session()
     stuff = session.query(User).all()
+    # categories = session.query(Hazard).all()
     work_list = session.query(Jobs).all()
     return render_template('job_table.html', title='Таблица работ', team=stuff, works=work_list)
 

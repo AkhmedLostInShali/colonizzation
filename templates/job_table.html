@@ -18,6 +18,7 @@
             <td>Team leader</td>
             <td>Duration</td>
             <td>List of collaborators</td>
+            <td>Hazard category</td>
             <td>Is finished</td>
           </tr>
           <tr bgcolor="#DDF">
@@ -26,6 +27,7 @@
             <td width="150px">{{ user.name + ' ' + user.surname }}</td>
             <td width="150px">{{ work.work_size }} {% if work.work_size > 1 %} hours {% else %} hour {% endif %}</td>
             <td width="150px">{{ work.collaborators }}</td>
+            <td width="150px">{{ work.hazards[0].level }}</td>
             {% if work.is_finished %}
               <td width="150px" bgcolor="#DFD">Is finished</td>
             {% else %}
