@@ -243,8 +243,8 @@ def show_city(users_id):
 @app.route('/member')
 def random_member():
     with open('templates/members.json') as f:
-        member_data = choice(json.load(f))
-    return render_template('member.html', member=member_data)
+        data = json.load(f)
+    return render_template('member.html', members=data)
 
 
 if __name__ == '__main__':

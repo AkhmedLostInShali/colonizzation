@@ -2,6 +2,7 @@
 
 {% block content %}
 <body>
+  {% set member = members|random() %}
   <h2 align="center">{{ member.name }} {{ member.surname }}</h2>
   <img style="justify:center" src="{{ url_for('static', filename='img/' + member.photo) }}">
   {% set profs = member.specialities|sort() %}
