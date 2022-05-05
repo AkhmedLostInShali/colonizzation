@@ -1,4 +1,6 @@
 from flask import Flask, url_for, redirect, render_template, request, session
+import json
+from random import choice
 from forms.loginform import LoginForm
 
 app = Flask(__name__)
@@ -274,6 +276,13 @@ def login():
     if form.validate_on_submit():
         return redirect('/success')
     return render_template('login.html', title='Авторизация', form=form)
+
+
+@app.route('/member')
+def random_member():
+    with open('templates/members.json') as f:
+        member_data = choice(json.load(f))
+    return render_template('member.html', member=member_data)
 
 
 if __name__ == '__main__':

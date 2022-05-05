@@ -1,0 +1,32 @@
+[
+  {
+    "name": "Ibrahim",
+    "surname": "(K)Hasaev",
+    "photo": "ibrahim.jpg",
+    "specialities": ["coder", "teacher", "traveller"]
+  },
+  {
+    "name": "Riri",
+    "surname": "Scott",
+    "photo": "baby.png",
+    "specialities": ["barista", "waiter", "barmen"]
+  },
+  {
+    "name": "Dora",
+    "surname": "Dura",
+    "photo": "Dora.jpg",
+    "specialities": ["singer", "chief"]
+  },
+  {
+    "name": "Ibrahim",
+    "surname": "NeKhasaev",
+    "photo": "NeIbrahim.jpg",
+    "specialities": ["Necoder", "Neteacher", "Netraveller"]
+  },
+  {
+    "name": "Ilya",
+    "surname": "MZLFF",
+    "photo": "MZLFF.jpg",
+    "specialities": ["singer", "streamer"]
+  }
+]

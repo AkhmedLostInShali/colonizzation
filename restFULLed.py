@@ -1,3 +1,6 @@
+import json
+from random import choice
+
 from data import db_session, jobs_api, users_api, jobs_resource, users_resource
 from data.users import User
 from data.jobs import Jobs
@@ -239,6 +242,13 @@ def show_city(users_id):
     coordinates = ','.join(toponym["Point"]["pos"].split(' '))
     img_src = f"http://static-maps.yandex.ru/1.x/?ll={coordinates}&l=sat&z=12"
     return render_template('show_city.html', name=user.get('name'), surname=user.get('surname'), img_src=img_src)
+
+
+@app.route('/member')
+def random_member():
+    with open('templates/members.json') as f:
+        member_data = choice(json.load(f))
+    return render_template('member.html', member=member_data)
 
 
 if __name__ == '__main__':

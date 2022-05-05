@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<body>
+  <h2 align="center">{{ member.name }} {{ member.surname }}</h2>
+  <img style="justify:center" src="{{ url_for('static', filename='img/' + member.photo) }}">
+  {% set profs = member.specialities|sort() %}
+  <h5 align="center">&#183{% for prof in profs %}{{ prof }}&#183{% endfor %}</h5>
+</body>
+{% endblock %}
