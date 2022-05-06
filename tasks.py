@@ -1,7 +1,8 @@
 import os
 
-from flask import Flask, url_for, redirect, render_template, request, session
-from loginform import LoginForm
+from flask import Flask, url_for, redirect, render_template, request
+from forms.loginform import LoginForm
+from forms.photo_form import PhotoForm
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
@@ -233,56 +234,23 @@ def results(nickname, level, rating):
                 </html>"""
 
 
-@app.route("/carousel/")
+@app.route("/carousel", methods=['GET', 'POST'])
 def carousel():
-    return f"""<!doctype html>
-                <html lang="en">
-                  <head>
-                    <meta charset="utf-8">
-                    <link rel="stylesheet" 
-                    href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" 
-                    integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" 
-                    crossorigin="anonymous">
-                    <script type="text/javascript" src="//code.jquery.com/jquery.min.js"></script>
-                    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-                    <title>пейзажи!</title>
-                  </head>
-                  <body>
-                      <header>
-                        <h1 align='center'>Пейзажи марса</h1>
-                        <div id="carouselExampleIndicators" class="carousel slide" data-mdb-ride="carousel">
-                          <div class="carousel-indicators">
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-                            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
-                          </div>
-                          <div class="carousel-inner">
-                            <div class="carousel-item active" id="0">
-                              <img src="{url_for('static', filename='img/landscapes/1.jpg')}" class="d-block w-100" style="width: 800px; height: 400" alt="...">
-                            </div>
-                            <div class="carousel-item" id="1">
-                              <img src="{url_for('static', filename='img/landscapes/2.jpg')}" class="d-block w-100" style="width: 800px; height: 400" alt="...">
-                            </div>
-                            <div class="carousel-item" id="2">
-                              <img src="{url_for('static', filename='img/landscapes/3.jpg')}" class="d-block w-100" style="width: 800px; height: 400" alt="...">
-                            </div>
-                            <div class="carousel-item" id="3">
-                              <img src="{url_for('static', filename='img/landscapes/4.jpg')}" class="d-block w-100" style="width: 800px; height: 400" alt="...">
-                            </div>
-                          </div>
-                              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
-                              </button>
-                              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                              </button>
-                        </div>
-                      </header>
-                  </body>
-                </html>"""
+    form = PhotoForm()
+    folders = os.getcwd().split('\\')
+    if folders[-1] != 'img':
+        os.chdir('static/img')
+    if form.validate_on_submit():
+        filecode = max(os.listdir())
+        filecode = filecode[:-5] + chr(ord(filecode[-5]) + 1) + filecode[-4:]
+        if os.path.exists(filecode):
+            os.remove(filecode)
+        f = form.photo.data
+        if f:
+            f.save(filecode)
+    photos = [url_for('static', filename=f'img/{photo}') for photo in os.listdir()]
+    os.chdir('...')
+    return render_template('carousel.html', form=form, photos=photos)
 
 
 @app.route('/login', methods=['GET', 'POST'])
